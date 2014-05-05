@@ -1,0 +1,16 @@
+.DS_Store
+.travis.yml
+index.php
+license.txt
+
+application/*
+
+user_guide/*
+system/*
+assets/*
+nbproject/*
+
+!application/controllers
+!application/models
+!application/views
+!application/libraries
