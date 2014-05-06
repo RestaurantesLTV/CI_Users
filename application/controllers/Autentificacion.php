@@ -9,15 +9,19 @@ class Autentificacion extends CI_Controller {
         
         $usuario = null;
         
-        $username = $this->session->userdata('username');
-        $pass = $this->session->userdata('pass');
+        // Si existe la sesion:
+        if(Usuario::sesionExiste()){
+            $usuario = Usuario::crearDesdeSesion();
+        }
         
-        // Si existen la sesion:
-        if($username && $pass){
+        if($usuario){
                 // http://ellislab.com/codeigniter/user-guide/general/urls.html
+            if($usuario->login()){
+                $this->CI->session->set_flashdata('error_message', 'Usuario y password incorrecto!');
+            }
                 redirect('administracion','refresh'); // Redirect al controlador 'request'
         }else{
-            if($this->input->post('username') && $this->input->post('pass')){
+            if($this->input->post('username') && $this->input->post('password')){
                 
             }else{
                 $this->CI->session->set_flashdata('error_message', 'Rellene los campos!');
