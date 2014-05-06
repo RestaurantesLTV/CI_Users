@@ -6,36 +6,24 @@
  * como apoyo para guardar sus datos. 
  */
 class Usuario {
-
-    /**
-     *
-     * @var int 
-     */
     private $id = null;
-
-    /**
-     *
-     * @var String 
-     */
+    private $permisos;
     private $nombre;
-
-    /**
-     *
-     * @var String
-     */
-    private $email;
     private $username;
     private $password;
-    private $ultimaConn;
-    private $permisos;
+    private $email;
     private $descripcion;
     private $CI;
+    private $ultimaConn;
+    private $estaConectado;
+    private $estaLogeado;
     private $hashActivado;
 
     /**
      * 
-     * @param type $nickname - nombre del usuario
-     * @param type $password - contraseña
+     * @param String $nickname - nombre del usuario
+     * @param String $password - contraseña
+     * @param boolean - Indica si están codificados los campos que se le pasan al constructor. Por defecto: true
      */
     public function __construct($username, $password, $isHash = true) {
         $this->CI = & get_instance();
@@ -45,12 +33,11 @@ class Usuario {
     }
 
     /**
-     * 
      * Recoge el nombre
      * @author Victor Arnau <vicargoapp en gmail.com>
      */
     public function getUsername() {
-        $this->bd->get('username');
+        $this->username;
     }
 
     /**
@@ -58,13 +45,14 @@ class Usuario {
      * @author Victor Arnau <vicargoapp en gmail.com>
      */
     public function getPassword() {
-        $this->bd->get('password');
+        $this->password;
     }
 
     /**
      * 
      * @return el parametro ultimaConn actualizado
      * @author Victor Arnau <vicargoapp en gmail.com>
+     * @todo Falta definir lo que devuelve. Metodo incompleto.
      */
     function actualizarUltimaConexion() {
         /* Arreglado por unscathed18 */
@@ -73,8 +61,6 @@ class Usuario {
                 throw new Exception("Llamada a metodo: 'actualizarUltimaConexion' --> El usuario no existe!");
             }
         }
-        $this->CI->db->where(array('id' => $this->get_id()));
-        return $this->CI->db->update('usuarios', array('ultimaConn' => date('Y-m-d')));
     }
 
     /**
@@ -111,7 +97,6 @@ class Usuario {
      * @author Victor Arnau <vicargoapp en gmail.com>
      */
     public function login() {
-
         if ($this->hashActivado) {
             $this->username = $this->encrypt->decode($this->username);
             $this->password = $this->encrypt->decode($this->password);
